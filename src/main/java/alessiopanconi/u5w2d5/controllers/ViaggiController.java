@@ -1,6 +1,7 @@
 package alessiopanconi.u5w2d5.controllers;
 
 import alessiopanconi.u5w2d5.DTO.NewViaggioDTO;
+import alessiopanconi.u5w2d5.DTO.PatchViaggioDTO;
 import alessiopanconi.u5w2d5.entities.Viaggio;
 import alessiopanconi.u5w2d5.exceptions.ValidationException;
 import alessiopanconi.u5w2d5.services.ViaggiService;
@@ -55,6 +56,11 @@ public class ViaggiController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findViaggioByIdAndDelete(@PathVariable long viaggioId) {
         this.viaggiService.findViaggioByIdAndDelete(viaggioId);
+    }
+
+    @PatchMapping("/{viaggioId}/stato")
+    public Viaggio modificaStatoViaggio(@PathVariable long viaggioId, @RequestBody PatchViaggioDTO payload) {
+        return this.viaggiService.findVianggioByIdAndModifyStato(viaggioId, payload);
     }
 
 }

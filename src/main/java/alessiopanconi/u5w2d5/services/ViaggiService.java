@@ -1,6 +1,7 @@
 package alessiopanconi.u5w2d5.services;
 
 import alessiopanconi.u5w2d5.DTO.NewViaggioDTO;
+import alessiopanconi.u5w2d5.DTO.PatchViaggioDTO;
 import alessiopanconi.u5w2d5.entities.Viaggio;
 import alessiopanconi.u5w2d5.enums.Stato;
 import alessiopanconi.u5w2d5.exceptions.BadRequestException;
@@ -74,5 +75,34 @@ public class ViaggiService {
     public void findViaggioByIdAndDelete(long viaggioId) {
         Viaggio found= findViaggioById(viaggioId);
         this.viaggioRepository.delete(found);
+    }
+
+    public Viaggio findVianggioByIdAndModifyStato(long viaggioId, PatchViaggioDTO payload){
+        Viaggio found= findViaggioById(viaggioId);
+
+        String stato = payload.stato().toUpperCase();
+        if (stato.equals("IN_PROGRAMMA")) {
+            if (found.getData().isAfter(LocalDate.now()))
+            {
+                found.setStato(Stato.IN_PROGRAMMA);
+                Viaggio viaggioModificato = this.viaggioRepository.save(found);
+                System.out.println("Viaggio modificato correttamente");
+                return viaggioModificato;
+            }else{
+                throw new BadRequestException("Non puoi mettere come stato IN_PROGRAMMA ad un viaggio avvenuto nel passato");
+            }
+        } else if (stato.equals("COMPLETATO")) {
+            if (found.getData().isBefore(LocalDate.now()) || found.getData().isEqual(LocalDate.now()))
+            {
+                found.setStato(Stato.COMPLETATO);
+                Viaggio viaggioModificato = this.viaggioRepository.save(found);
+                System.out.println("Viaggio modificato correttamente");
+                return viaggioModificato;
+            }else{
+                throw new BadRequestException("Non puoi mettere come stato COMPLETATO ad un viaggio che non è ancora stato fatto");
+            }
+        } else {
+            throw new BadRequestException("Lo stato che hai inserito non è valido, gli unici stati ammessi sono (completato) (in_programma)");
+        }
     }
 }
