@@ -6,6 +6,6 @@ public record NewViaggioDTO(
 
         @NotEmpty(message =  "La destinazione è obbligatorio")
         String destinazione,
-        @NotEmpty(message =  "La data è obbligatorio")
+        @NotEmpty(message =  "La dataDiRichiesta è obbligatorio")
         String data
 ) {}

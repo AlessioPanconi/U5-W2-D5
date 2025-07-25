@@ -34,7 +34,7 @@ public class Viaggio {
         return "Viaggio{" +
                 "idPrenotazione=" + idViaggio +
                 ", destinazione='" + destinazione + '\'' +
-                ", data=" + data +
+                ", dataDiRichiesta=" + data +
                 ", stato=" + stato +
                 '}';
     }

@@ -23,11 +23,11 @@ public class Prenotazione {
     private String preferenze;
 
     @ManyToOne
-    @JoinColumn(name = "idDipendente", nullable = false)
+    @JoinColumn(name = "id_dipendente", nullable = false)
     private Dipendente dipendente;
 
     @ManyToOne
-    @JoinColumn(name = "idViaggio", nullable = false)
+    @JoinColumn(name = "id_viaggio", nullable = false)
     private Viaggio viaggio;
 
     public Prenotazione(LocalDate dataDiRichiesta, String preferenze, Dipendente dipendente, Viaggio viaggio) {

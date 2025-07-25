@@ -1,0 +1,64 @@
+package alessiopanconi.u5w2d5.services;
+
+import alessiopanconi.u5w2d5.DTO.NewPrenotazioneDTO;
+import alessiopanconi.u5w2d5.entities.Dipendente;
+import alessiopanconi.u5w2d5.entities.Prenotazione;
+import alessiopanconi.u5w2d5.entities.Viaggio;
+import alessiopanconi.u5w2d5.enums.Stato;
+import alessiopanconi.u5w2d5.exceptions.BadRequestException;
+import alessiopanconi.u5w2d5.exceptions.NotFoundException;
+import alessiopanconi.u5w2d5.repositories.PrenotazioneRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+
+@Service
+public class PrenotazioniService {
+
+    @Autowired
+    private PrenotazioneRepository prenotazioneRepository;
+
+    @Autowired
+    private DipendentiService dipendentiService;
+
+    @Autowired
+    private ViaggiService viaggiService;
+
+    public Page<Prenotazione> findAll(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return this.prenotazioneRepository.findAll(pageable);
+    }
+
+    public Prenotazione savePrenotazione(NewPrenotazioneDTO payload)
+    {
+            Dipendente dipendente = this.dipendentiService.findDipendenteById(payload.idDipendente());
+            Viaggio viaggio = this.viaggiService.findViaggioById(payload.idViaggio());
+
+            if(viaggio.getStato() == Stato.COMPLETATO)
+            {
+                throw new BadRequestException("Non puoi creare una prenotazione per un viaggio già completato");
+            }
+            if (this.prenotazioneRepository.countByDipendenteIdAndViaggioData(dipendente.getIdDipendente(), viaggio.getData())!=0)
+            {
+                throw new BadRequestException("Il dipendente: "+dipendente.getNome()+" "+dipendente.getCognome() +" ha già una prenotazione per il giorno " + viaggio.getData());
+            }
+            Prenotazione newPrenotazione = new Prenotazione(LocalDate.now(),payload.preferenze(),dipendente,viaggio);
+            Prenotazione savedPrenotazione = this.prenotazioneRepository.save(newPrenotazione);
+            System.out.println("La prenotazione di: "+ dipendente.getNome()+" "+dipendente.getCognome() +" è stata salvata correttamente");
+            return savedPrenotazione;
+
+    }
+
+    public Prenotazione findPrenotazioneById(long prenotazioneId) {
+        return this.prenotazioneRepository.findById(prenotazioneId).orElseThrow(()-> new NotFoundException(prenotazioneId));
+    }
+
+    public void findPrenotazioneByIdAndDelete(long prenotazioneId) {
+        Prenotazione found= findPrenotazioneById(prenotazioneId);
+        this.prenotazioneRepository.delete(found);
+    }
+}

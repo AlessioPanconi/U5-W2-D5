@@ -32,7 +32,7 @@ public class ViaggiService {
         try {
             LocalDate data = LocalDate.parse(payload.data());
             Stato statoViaggio;
-            if (data.isBefore(LocalDate.now())) {
+            if (data.isBefore(LocalDate.now())|| data.isEqual(LocalDate.now())) {
                 statoViaggio = Stato.COMPLETATO;
             }else {
                 statoViaggio = Stato.IN_PROGRAMMA;
@@ -60,7 +60,6 @@ public class ViaggiService {
             }else {
                 statoViaggio = Stato.IN_PROGRAMMA;
             }
-
             found.setData(data);
             found.setStato(statoViaggio);
             found.setDestinazione(payload.destinazione());
@@ -68,7 +67,7 @@ public class ViaggiService {
             System.out.println("Viaggio modificato correttamente");
             return viaggioModificato;
         } catch (DateTimeParseException e) {
-            throw new BadRequestException("Il formato della data inserita non è valido. Il formato corretto è yyyy-mm-dd.");
+            throw new BadRequestException("Il formato della dataDiRichiesta inserita non è valido. Il formato corretto è yyyy-mm-dd.");
         }
     }
 
