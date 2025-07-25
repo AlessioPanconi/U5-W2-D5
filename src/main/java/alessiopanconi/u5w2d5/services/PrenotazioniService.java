@@ -53,27 +53,27 @@ public class PrenotazioniService {
 
     }
 
-    public Prenotazione findPrenotazioneByIdAndUpdate(long prenotazioneId, NewPrenotazioneDTO payload)
-    {
-        Dipendente dipendente = this.dipendentiService.findDipendenteById(payload.idDipendente());
-        Viaggio viaggio = this.viaggiService.findViaggioById(payload.idViaggio());
-        if(viaggio.getStato() == Stato.COMPLETATO)
-        {
-            throw new BadRequestException("Non puoi modificare una prenotazione con un viaggio già completato");
-        }
-        if (this.prenotazioneRepository.countByDipendenteIdAndViaggioData(dipendente.getIdDipendente(), viaggio.getData())!=0)
-        {
-            throw new BadRequestException("Il dipendente: "+dipendente.getNome()+" "+dipendente.getCognome() +" ha già una prenotazione per il giorno " + viaggio.getData());
-        }
-        Prenotazione found = this.findPrenotazioneById(prenotazioneId);
-        found.setDataDiRichiesta(LocalDate.now());
-        found.setPreferenze(payload.preferenze());
-        found.setDipendente(dipendente);
-        found.setViaggio(viaggio);
-        Prenotazione prenotazioneModificata = this.prenotazioneRepository.save(found);
-        System.out.println("Prenotazione modificata correttamente");
-        return prenotazioneModificata;
-    }
+//    public Prenotazione findPrenotazioneByIdAndUpdate(long prenotazioneId, NewPrenotazioneDTO payload)
+//    {
+//        Dipendente dipendente = this.dipendentiService.findDipendenteById(payload.idDipendente());
+//        Viaggio viaggio = this.viaggiService.findViaggioById(payload.idViaggio());
+//        if(viaggio.getStato() == Stato.COMPLETATO)
+//        {
+//            throw new BadRequestException("Non puoi modificare una prenotazione con un viaggio già completato");
+//        }
+//        if (this.prenotazioneRepository.countByDipendenteIdAndViaggioData(dipendente.getIdDipendente(), viaggio.getData())!=0)
+//        {
+//            throw new BadRequestException("Il dipendente: "+dipendente.getNome()+" "+dipendente.getCognome() +" ha già una prenotazione per il giorno " + viaggio.getData());
+//        }
+//        Prenotazione found = this.findPrenotazioneById(prenotazioneId);
+//        found.setDataDiRichiesta(LocalDate.now());
+//        found.setPreferenze(payload.preferenze());
+//        found.setDipendente(dipendente);
+//        found.setViaggio(viaggio);
+//        Prenotazione prenotazioneModificata = this.prenotazioneRepository.save(found);
+//        System.out.println("Prenotazione modificata correttamente");
+//        return prenotazioneModificata;
+//    }non l'ho testato non so se funziona
 
     public Prenotazione findPrenotazioneById(long prenotazioneId) {
         return this.prenotazioneRepository.findById(prenotazioneId).orElseThrow(()-> new NotFoundException(prenotazioneId));

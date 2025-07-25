@@ -36,16 +36,16 @@ public class PrenotazioniController {
         }
     }
 
-    @PutMapping("/{prenotazioneId}")
-    public Prenotazione findPrenotazioneByIdAndUpdate (@RequestBody @Validated NewPrenotazioneDTO body, BindingResult validationResult , @PathVariable long dipendenteId)
-    {
-        if(validationResult.hasErrors()){
-            throw new ValidationException(validationResult.getFieldErrors()
-                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-        } else{
-            return this.prenotazioniService.findPrenotazioneByIdAndUpdate(dipendenteId,body);
-        }
-    }
+//    @PutMapping("/{prenotazioneId}")
+//    public Prenotazione findPrenotazioneByIdAndUpdate (@RequestBody @Validated NewPrenotazioneDTO body, BindingResult validationResult , @PathVariable long dipendenteId)
+//    {
+//        if(validationResult.hasErrors()){
+//            throw new ValidationException(validationResult.getFieldErrors()
+//                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
+//        } else{
+//            return this.prenotazioniService.findPrenotazioneByIdAndUpdate(dipendenteId,body);
+//        }
+//    }
 
     @GetMapping("/{prenotazioneId}")
     public Prenotazione getViaggioById(@PathVariable long prenotazioneId)
