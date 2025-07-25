@@ -68,7 +68,6 @@ public class PrenotazioniService {
         Prenotazione found = this.findPrenotazioneById(prenotazioneId);
         found.setDataDiRichiesta(LocalDate.now());
         found.setPreferenze(payload.preferenze());
-        found.setDipendente(dipendente);
         found.setViaggio(viaggio);
         Prenotazione prenotazioneModificata = this.prenotazioneRepository.save(found);
         System.out.println("Prenotazione modificata correttamente");
