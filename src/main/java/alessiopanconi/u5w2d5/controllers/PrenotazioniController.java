@@ -2,6 +2,7 @@ package alessiopanconi.u5w2d5.controllers;
 
 import alessiopanconi.u5w2d5.DTO.NewDipendenteDTO;
 import alessiopanconi.u5w2d5.DTO.NewPrenotazioneDTO;
+import alessiopanconi.u5w2d5.DTO.PutPrenotazioneDTO;
 import alessiopanconi.u5w2d5.entities.Dipendente;
 import alessiopanconi.u5w2d5.entities.Prenotazione;
 import alessiopanconi.u5w2d5.exceptions.ValidationException;
@@ -35,17 +36,17 @@ public class PrenotazioniController {
             return this.prenotazioniService.savePrenotazione(body);
         }
     }
-
-//    @PutMapping("/{prenotazioneId}")
-//    public Prenotazione findPrenotazioneByIdAndUpdate (@RequestBody @Validated NewPrenotazioneDTO body, BindingResult validationResult , @PathVariable long dipendenteId)
-//    {
-//        if(validationResult.hasErrors()){
-//            throw new ValidationException(validationResult.getFieldErrors()
-//                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-//        } else{
-//            return this.prenotazioniService.findPrenotazioneByIdAndUpdate(dipendenteId,body);
-//        }
-//    }
+//non test
+    @PutMapping("/{prenotazioneId}")
+    public Prenotazione findPrenotazioneByIdAndUpdate (@RequestBody @Validated PutPrenotazioneDTO body, BindingResult validationResult , @PathVariable long dipendenteId)
+    {
+        if(validationResult.hasErrors()){
+            throw new ValidationException(validationResult.getFieldErrors()
+                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
+        } else{
+            return this.prenotazioniService.findPrenotazioneByIdAndUpdate(dipendenteId,body);
+        }
+    }
 
     @GetMapping("/{prenotazioneId}")
     public Prenotazione getViaggioById(@PathVariable long prenotazioneId)
