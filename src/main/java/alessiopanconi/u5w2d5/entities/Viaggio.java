@@ -1,10 +1,7 @@
 package alessiopanconi.u5w2d5.entities;
 
 import alessiopanconi.u5w2d5.enums.Stato;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +21,7 @@ public class Viaggio {
     private long idViaggio;
     private String destinazione;
     private LocalDate data;
+    @Enumerated(EnumType.STRING)
     private Stato stato;
 
     public Viaggio(String destinazione, LocalDate data, Stato stato) {

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/dipendenti")
-public class DipendentiControllers {
+public class DipendentiController {
 
     @Autowired
     private DipendentiService dipendentiService;
